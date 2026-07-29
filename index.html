@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kost Muslimah Surakarta - Sketch</title>
+    <!-- Menggunakan font Google 'Inter' untuk kesan bersih dan modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- GLOBAL STYLES --- */
+        :root {
+            --primary: #7C9D82;
+            --primary-dark: #638269;
+            --bg: #F8FAF8;
+            --text-main: #333333;
+            --text-light: #666666;
+            --white: #FFFFFF;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+
+        /* --- LANDING PAGE (Pilihan Lokasi) --- */
+        #landing-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            text-align: center;
+        }
+
+        .card-grid {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        /* Kartu dengan Background Gambar */
+        .location-card {
+            flex: 1;
+            padding: 40px 20px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid transparent;
+            
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .location-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .location-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .location-card h2,
+        .location-card p {
+            position: relative;
+            z-index: 2;
+            color: var(--white);
+            margin: 0;
+        }
+
+        .location-card h2 {
+            margin-bottom: 10px;
+        }
+
+        /* Placeholder Gambar Kartu */
+        .bg-ums {
+            background-image: url('bg_UMS.png');
+        }
+
+        .bg-uns {
+            background-image: url('bg_UNS.png');
+        }
+
+        /* --- DETAIL PAGE STYLES --- */
+        .detail-page {
+            display: none; /* Disembunyikan secara default */
+            padding-bottom: 80px; 
+        }
+
+        .btn-back {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .hero-img-placeholder {
+            width: 100%;
+            height: 250px;
+            background-color: #E2E8E4;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-placeholder {
+            height: 100px;
+            background-color: #E2E8E4;
+            border-radius: 8px;
+        }
+
+        .info-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            margin-bottom: 20px;
+        }
+
+        .facility-list {
+            columns: 2;
+            padding-left: 20px;
+        }
+
+        /* Google Maps Styles */
+        .map-iframe {
+            width: 100%;
+            height: 200px;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .btn-map {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: #F0F4F1;
+            color: var(--primary-dark);
+            padding: 12px 0;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+            border: 1px solid var(--primary);
+        }
+
+        .btn-map:hover {
+            background-color: #E2E8E4;
+        }
+
+        /* FAQ Accordion */
+        details {
+            background: var(--white);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
+        summary {
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+
+        details p {
+            margin-bottom: 0;
+            margin-top: 10px;
+            color: var(--text-light);
+        }
+
+        /* Floating CTA Button */
+        .floating-cta {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(124, 157, 130, 0.4);
+            transition: background 0.2s;
+            z-index: 1000;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .floating-cta:hover {
+            background-color: var(--primary-dark);
+        }
+
+        @media (max-width: 600px) {
+            .card-grid {
+                flex-direction: column;
+            }
+            .facility-list {
+                columns: 1;
+            }
+        }
+
+        /* Style untuk Foto Utama (Hero Image) */
+        .hero-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover; /* Memastikan foto menutupi area tanpa menjadi gepeng */
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Style untuk Foto-foto di Galeri Mini */
+        .gallery-img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover; /* Memastikan foto menutupi area tanpa menjadi gepeng */
+            border-radius: 8px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HALAMAN UTAMA (LANDING PAGE) -->
+    <div id="landing-page" class="container">
+        <h1>Kost Muslimah Surakarta</h1>
+        <p style="color: var(--text-light);">Selamat Datang di website Kost Muslimah Surakarta, ingin mencari kost dimana hari ini?</p>
+        
+        <div class="card-grid">
+            <div class="location-card bg-ums" onclick="goToDetail('UMS')">
+                <h2>Kost De Mocca</h2>
+                <p>Kost Muslimah dekat Universitas Muhammadiyah Surakarta.</p>
+            </div>
+            <div class="location-card bg-uns" onclick="goToDetail('UNS')">
+                <h2>Kost D'Alamanda</h2>
+                <p>Kost Muslimah dekat Universitas Negeri Sebelas Maret.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- HALAMAN DETAIL KOST UMS                    -->
+    <!-- ========================================== -->
+    <div id="detail-page-ums" class="container detail-page">
+        <button class="btn-back" onclick="goBack()">← Kembali ke Pilihan Lokasi</button>
+        
+        <!-- FOTO UTAMA KOST (Hero Image) -->
+        <img src="depan_UMS.png" alt="Tampak Depan Kost De Mocca" class="hero-image">
+
+        <h1>Kost De Mocca</h1>
+        <p style="color: var(--text-light);">De Mocca Muslimah Kost, merupakan kost khusus muslimah yang berjarak hanya 500 meter dari Kampus 4 Universitas Muhammadiyah Surakarta dan 1 KM dari Edutorium UMS. De Mocca Muslimah Kost juga dikelilingi oleh berbagai macam warung makan, mini market, serta kebutuhan mahasiswi lainnya, membuat kost ini sangat strategis dan dapat menjadi pilihan kost kamu .</p>
+
+        <!-- GALERI MINI UMS -->
+        <div class="gallery-grid">
+            <img src="kamar_UMS.jpg" alt="Suasana Kamar" class="gallery-img">
+            <img src="dapur_UMS.jpg" alt="Fasilitas Dapur" class="gallery-img">
+            <img src="kmandi_UMS.jpg" alt="Kamar Mandi" class="gallery-img">
+        </div>
+
+        <div class="info-card">
+            <h2>Ingin Melihat Foto atau Video Detail Kamar?</h2>
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                <a href="https://drive.google.com/drive/folders/1Z8iJ8LtLSHKhm2fm34boecOrHGE6fMNh?usp=sharing" target="_blank" class="btn btn-primary">Lihat Galeri Kost</a>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h2>Tipe Kamar & Harga</h2>
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                <strong>Kamar dengan AC dan Kamar Mandi Dalam</strong>
+                <span style="color: var(--primary); font-weight: bold;">Rp 950.000 / bln</span>
+            </div>
+        </div>
+
+        <!-- Fasilitas UMS -->
+        <div class="info-card">
+            <h2>Fasilitas Kost</h2>
+            <ul class="facility-list">
+                <li>Kasur, Lemari, dan Meja</li>
+                <li>AC di Setiap Kamar</li>
+                <li>Dapur Bersama</li>
+                <li>Parkir Motor</li>
+                <li>Wifi yang Kencang</li>
+                <li>Area Cuci dan Jemur Pakaian</li>
+                <li>Keamanan CCTV 24 Jam</li>
+                <li>Kulkas Bersama</li>
+                <li>Shower di Setiap Kamar Mandi</li>
+            </ul>
+        </div>
+
+        <!-- ALAMAT & GOOGLE MAPS UMS -->
+        <div class="info-card">
+            <h2>Lokasi & Alamat</h2>
+            <p style="color: var(--text-light); margin-bottom: 5px;">
+                Jl. Merak Jl. Morodipan, RT.001/RW.02, Geduren, Gonilan, Kec. Kartasura, Kabupaten Sukoharjo, Jawa Tengah 57169 (Dekat Kampus 4 UMS).
+            </p>
+            <iframe class="map-iframe" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.2598689593106!2d110.7673173250162!3d-7.546614774504709!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a15fc65fdccc9%3A0x8654aec63f49629c!2skost%20de%20mocca!5e0!3m2!1sen!2sid!4v1785346244927!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+
+        <!-- FAQ UMS -->
+        <div class="info-card" style="background: transparent; box-shadow: none; padding: 0;">
+            <h2 style="margin-bottom: 15px;">Pertanyaan Umum (FAQ)</h2>
+            <details>
+                <summary>Apakah teman wanita boleh menginap?</summary>
+                <p>Boleh, namun harus lapor ke pengurus kost dan dalam batas hari yang wajar.</p>
+            </details>
+            <details>    
+                <summary>Apakah ada jam malam?</summary>
+                <p>Demi menjaga keamanan, gerbang akan digembok pada pukul 22.00, akan tetapi seluruh penghuni akan diberikan kunci gembok masing-masing.</p>
+            </details>
+        </div>
+
+        <!-- Floating Button UMS -->
+        <a href="https://wa.me/628000000000?text=Halo,%20saya%20tertarik%20dengan%20Kost%20UMS" class="floating-cta">Tanya Info Kost De Mocca (WhatsApp)</a>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- HALAMAN DETAIL KOST UNS                    -->
+    <!-- ========================================== -->
+    <div id="detail-page-uns" class="container detail-page">
+        <button class="btn-back" onclick="goBack()">← Kembali ke Pilihan Lokasi</button>
+        
+        <!-- FOTO UTAMA KOST (Hero Image) -->
+        <img src="depan_UNS.jpg" alt="Tampak Depan Kost D'Alamanda" class="hero-image">
+
+        <h1>Kost D'Alamanda</h1>
+        <p style="color: var(--text-light);">D'Alamanda Muslimah Kost merupakan kost khusus muslimah yang dekat dengan gerbang belakang UNS, dengan jarak hanya 1,3 KM dari gerbang belakang UNS, dikelilingi oleh berbagai kebutuhan mahasiswi seperti warung makan, minimarket, fotocopy, dll. membuat kost ini dapat dijadikan kost yang ideal untuk ditempati.</p>
+
+        <!-- GALERI MINI UMS -->
+        <div class="gallery-grid">
+            <img src="km_UNS.jpg" alt="Suasana Kamar" class="gallery-img">
+            <img src="meja_UNS.jpg" alt="Fasilitas Kamar" class="gallery-img">
+            <img src="dapur_UNS.jpg" alt="Fasilitas Dapur" class="gallery-img">
+        </div>
+
+        <div class="info-card">
+            <h2>Ingin Melihat Foto atau Video Detail Kamar?</h2>
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                <a href="https://drive.google.com/drive/folders/1lCoVNzNQrJrz-66VEgqgx_EHarO78Kle?usp=sharing" target="_blank" class="btn btn-primary">Lihat Galeri Kost</a>
+            </div>
+        </div>
+
+        <!-- Tipe Kamar & Harga UNS -->
+        <div class="info-card">
+            <h2>Tipe Kamar & Harga</h2>
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                <strong>Kamar tanpa Kamar Mandi Dalam</strong>
+                <span style="color: var(--primary); font-weight: bold;">Rp 5.000.000 / tahun</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <strong>Kamar dengan Kamar Mandi Dalam</strong>
+                <span style="color: var(--primary); font-weight: bold;">Rp 6.000.000 / tahun</span>
+            </div>
+        </div>
+
+        <!-- Fasilitas UNS -->
+        <div class="info-card">
+            <h2>Fasilitas Kost</h2>
+            <ul class="facility-list">
+                <li>Kasur, Lemari, dan Meja</li>
+                <li>Dapur Bersama</li>
+                <li>Parkir Motor yang Luas</li>
+                <li>Wifi yang Kencang</li>
+                <li>Area Cuci dan Jemur Pakaian</li>
+                <li>Keamanan CCTV 24 Jam</li>
+                <li>Kulkas Bersama</li>
+            </ul>
+        </div>
+
+        <!-- ALAMAT & GOOGLE MAPS UNS -->
+        <div class="info-card">
+            <h2>Lokasi & Alamat</h2>
+            <p style="color: var(--text-light); margin-bottom: 5px;">
+                Jl. Kartika 5 No.27, Jebres, Kec. Jebres, Kota Surakarta, Jawa Tengah 57126 (Dekat Gerbang Belakang UNS).
+            </p>
+            <iframe class="map-iframe" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.199593709814!2d110.86213987501617!3d-7.5532026745793095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a1742e7ec8f9f%3A0xd1a461c6ae45c62a!2sKos%20D'Alamanda%20Muslimah!5e0!3m2!1sen!2sid!4v1785344323550!5m2!1sen!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+
+        <!-- FAQ UNS -->
+        <div class="info-card" style="background: transparent; box-shadow: none; padding: 0;">
+            <h2 style="margin-bottom: 15px;">Pertanyaan Yang Sering Ditanyakan (FAQ)</h2>
+            <details>
+                <summary>Apakah teman wanita boleh menginap?</summary>
+                <p>Boleh, namun harus lapor ke pengurus kost dan dalam batas hari yang wajar.</p>
+            </details>
+            <details>
+                <summary>Apakah kipas angin sudah tersedia?</summary>
+                <p>Sayangnya kipas angin belum tersedia, namun kamu dapat membawanya dan tidak akan dikenakan biaya listrik tambahan.</p>
+            </details>
+            <details>   
+                <summary>Apakah bisa membayar bulanan?</summary>
+                <p>Boleh, jika memang ingin membayar kost secara bulanan, kamu dapat menghubungi nomor kost yang tersedia.</p>
+            </details>
+            <details>    
+                <summary>Apakah ada jam malam?</summary>
+                <p>Demi menjaga keamanan, gerbang akan digembok pada pukul 22.00, akan tetapi seluruh penghuni akan diberikan kunci gembok masing-masing.</p>
+            </details>
+        </div>
+
+        <!-- Floating Button UNS -->
+        <a href="https://wa.me/628000000000?text=Halo,%20saya%20tertarik%20dengan%20Kost%20D'Alamanda" class="floating-cta">Tanya Info Kost D'Alamanda (WhatsApp)</a>
+    </div>
+
+    <!-- Script JavaScript yang diperbarui -->
+    <script>
+        function goToDetail(location) {
+            // Sembunyikan halaman utama
+            document.getElementById('landing-page').style.display = 'none';
+            
+            // Tampilkan halaman detail yang sesuai
+            if(location === 'UMS') {
+                document.getElementById('detail-page-ums').style.display = 'block';
+                document.getElementById('detail-page-uns').style.display = 'none';
+            } else if (location === 'UNS') {
+                document.getElementById('detail-page-uns').style.display = 'block';
+                document.getElementById('detail-page-ums').style.display = 'none';
+            }
+            
+            // Scroll ke atas saat pindah halaman
+            window.scrollTo(0, 0);
+        }
+
+        function goBack() {
+            // Sembunyikan kedua halaman detail
+            document.getElementById('detail-page-ums').style.display = 'none';
+            document.getElementById('detail-page-uns').style.display = 'none';
+            
+            // Tampilkan kembali halaman utama
+            document.getElementById('landing-page').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
